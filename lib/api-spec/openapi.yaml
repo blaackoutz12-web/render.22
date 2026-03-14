@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Betano Pro Dashboard API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: matches
+    description: Match data operations
+  - name: chat
+    description: AI chat operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /matches:
+    get:
+      operationId: getMatches
+      tags: [matches]
+      summary: Get all matches
+      parameters:
+        - name: view
+          in: query
+          schema:
+            type: string
+            enum: [all, bingo, live, scanner]
+          description: Filter view
+        - name: league
+          in: query
+          schema:
+            type: string
+          description: Filter by league name
+      responses:
+        "200":
+          description: List of matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchesResponse"
+
+  /matches/stats:
+    get:
+      operationId: getMatchStats
+      tags: [matches]
+      summary: Get match statistics
+      responses:
+        "200":
+          description: Match statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchStats"
+
+  /matches/leagues:
+    get:
+      operationId: getLeagues
+      tags: [matches]
+      summary: Get list of available leagues
+      responses:
+        "200":
+          description: List of league names
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaguesResponse"
+
+  /chat:
+    post:
+      operationId: sendChat
+      tags: [chat]
+      summary: Send a chat message to AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Match:
+      type: object
+      properties:
+        liga:
+          type: string
+        data:
+          type: string
+        hora:
+          type: string
+        team1_nome:
+          type: string
+        team2_nome:
+          type: string
+        team1:
+          type: number
+        empate:
+          type: number
+        team2:
+          type: number
+        value:
+          type: number
+        value_pct:
+          type: number
+        best_market:
+          type: string
+        tip:
+          type: string
+      required:
+        - liga
+        - team1_nome
+        - team2_nome
+        - team1
+        - empate
+        - team2
+        - value
+        - value_pct
+        - best_market
+
+    MatchesResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: "#/components/schemas/Match"
+        total:
+          type: integer
+      required:
+        - matches
+        - total
+
+    MatchStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        live:
+          type: integer
+        ev:
+          type: integer
+        ligas:
+          type: integer
+      required:
+        - total
+        - live
+        - ev
+        - ligas
+
+    LeaguesResponse:
+      type: object
+      properties:
+        leagues:
+          type: array
+          items:
+            type: string
+      required:
+        - leagues
+
+    ChatRequest:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    ChatResponse:
+      type: object
+      properties:
+        response:
+          type: string
+      required:
+        - response

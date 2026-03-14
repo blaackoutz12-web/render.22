@@ -1,0 +1,13 @@
+packages:
+  "framer-motion": "For premium page transitions, staggered card reveals, and smooth interactions"
+  "clsx": "Utility for constructing conditional className strings"
+  "tailwind-merge": "Utility to efficiently merge Tailwind classes"
+
+images:
+  - path: "artifacts/betano-dashboard/public/images/logo-mark.png"
+    description: "Minimalist, aggressive sports analytics logo mark featuring a bold abstract 'B' in sharp orange and ember gradients on a transparent background."
+    aspect_ratio: "1:1"
+
+notes:
+  - "Assuming React Query hooks are exported from @workspace/api-client-react as per standard Orval generation"
+  - "App is forced into dark mode to fit the premium sports analytics aesthetic"

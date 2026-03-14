@@ -1,0 +1,22 @@
+services:
+  # API Server
+  - type: web
+    name: betano-api
+    env: node
+    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
+    startCommand: node artifacts/api-server/dist/index.cjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+
+  # Dashboard (Static Site)
+  - type: static
+    name: betano-dashboard
+    env: static
+    buildCommand: pnpm install && pnpm --filter @workspace/betano-dashboard run build
+    publishDir: artifacts/betano-dashboard/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://betano-api.onrender.com/api # Change this to your actual API URL
