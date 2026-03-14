@@ -14,7 +14,6 @@ services:
   # Dashboard (Static Site)
   - type: static
     name: betano-dashboard
-    env: static
     buildCommand: pnpm install && pnpm --filter @workspace/betano-dashboard run build
     publishDir: artifacts/betano-dashboard/dist
     envVars:
